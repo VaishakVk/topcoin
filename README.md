@@ -59,7 +59,7 @@ Client service inturn triggers the Rating service and fetches the latest informa
 https://github.com/VaishakVk/topcoin.git
 ```
 
--   Pricing service
+-   <ins>Pricing service</ins>
 
 *   Navigate to `clientService`
 *   Create `.env` file. Reference keys are avaialble in `.env.example`
@@ -69,7 +69,7 @@ https://github.com/VaishakVk/topcoin.git
 go run main.go
 ```
 
--   Rating service
+-   <ins>Rating service</ins>
 
 *   Navigate to `ratingService`
 *   Create `.env` file. Reference keys are avaialble in `.env.example`
@@ -79,7 +79,7 @@ go run main.go
 go run main.go
 ```
 
--   Client service
+-   <ins>Client service</ins>
 
 *   Navigate to `clientService`
 *   Create `.env` file. Reference keys are avaialble in `.env.example`
