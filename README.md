@@ -37,10 +37,10 @@ GET localhost:8000/rank?limit=<limit>
 
 ### Client Service
 
-Client Service handles all the client interactions. HTTP service is exposed on port `6667`. Client hits the following URL
+Client Service handles all the client interactions. HTTP service is exposed on port `8001`. Client hits the following URL
 
 ```
-GET localhost:6667/topcoin?limit=<limit>
+GET localhost:8001/topcoin?limit=<limit>
 ```
 
 Client service inturn triggers the Rating service and fetches the latest information.
@@ -92,5 +92,5 @@ go run main.go
 When all the services are running, hit the following URL from browser or Postman
 
 ```
-GET localhost:6667/topcoin?limit=<limit:int>
+GET localhost:8001/topcoin?limit=<limit:int>
 ```

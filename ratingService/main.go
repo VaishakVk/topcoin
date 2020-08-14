@@ -55,5 +55,5 @@ func main() {
 	}()
 
 	// Listen to HTTP requests
-	http.ListenAndServe(":8000", headersAddedRouter)
+	log.Fatal(http.ListenAndServe(":8000", headersAddedRouter))
 }

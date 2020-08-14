@@ -21,10 +21,9 @@ func main() {
 
 	// Http server setup
 	router := mux.NewRouter()
-
 	routes.RegisterUserRoutes(router)
-	errorsHandled := middlewares.Recovery(router)
-	urlUpdated := middlewares.RemoveTrailingSlashes(errorsHandled)
-	headersAdded := middlewares.SetHeaders(urlUpdated)
-	log.Fatal(http.ListenAndServe(":6667", headersAdded))
+	errorsHandledRouter := middlewares.Recovery(router)
+	urlRouter := middlewares.RemoveTrailingSlashes(errorsHandledRouter)
+	headersAddedRouter := middlewares.SetHeaders(urlRouter)
+	log.Fatal(http.ListenAndServe(":8001", headersAddedRouter))
 }
