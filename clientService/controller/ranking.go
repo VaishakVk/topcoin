@@ -1,10 +1,11 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
-	"topcoin/ratingservice/ranking"
-	"topcoin/ratingservice/response"
+	"topcoin/clientservice/api"
+	"topcoin/clientservice/response"
 )
 
 func GetTopCoins(res http.ResponseWriter, req *http.Request) {
@@ -19,14 +20,12 @@ func GetTopCoins(res http.ResponseWriter, req *http.Request) {
 		response.SendResponse(res, http.StatusBadRequest, false, nil, err.Error())
 		return
 	}
-	if limit == 0 {
-		response.SendResponse(res, http.StatusBadRequest, false, nil, "Limit is invalid")
-		return
-	}
-	topCoins, libErr := ranking.GetTopCoins(limit)
+	fmt.Println("Before", limit)
+	topCoins, libErr := api.GetFromRatingService(limit)
 	if libErr != nil {
 		response.SendResponse(res, http.StatusInternalServerError, false, nil, libErr.Error())
 		return
 	}
+	fmt.Println("After")
 	response.SendResponse(res, http.StatusOK, true, topCoins, "")
 }
