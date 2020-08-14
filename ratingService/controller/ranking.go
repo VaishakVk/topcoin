@@ -7,6 +7,7 @@ import (
 	"topcoin/ratingservice/response"
 )
 
+// GetTopCoins - API Handler to get top coins based on limit parameter
 func GetTopCoins(res http.ResponseWriter, req *http.Request) {
 	keys, exist := req.URL.Query()["limit"]
 	if !exist {

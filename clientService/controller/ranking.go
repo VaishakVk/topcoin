@@ -8,6 +8,7 @@ import (
 	"topcoin/clientservice/response"
 )
 
+// API Handler to get top coins
 func GetTopCoins(res http.ResponseWriter, req *http.Request) {
 	keys, exist := req.URL.Query()["limit"]
 	if !exist {

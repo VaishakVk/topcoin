@@ -8,6 +8,7 @@ import (
 
 var priceRank model.TopCoins
 
+// Converts map data to array and sorts it according to Price
 func GenerateRanking(priceList map[string]model.Price) {
 	priceRank.Coins = nil
 	for _, value := range priceList {
@@ -20,6 +21,7 @@ func GenerateRanking(priceList map[string]model.Price) {
 	priceRank.AssignRank()
 }
 
+// Get top Coins based on limit
 func GetTopCoins(limit int64) ([]model.PriceRanking, error) {
 	if limit == 0 {
 		err := errors.New("Invalid Limit")

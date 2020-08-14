@@ -22,6 +22,7 @@ func ConnectAndCreateChannel() (*amqp.Connection, *amqp.Channel) {
 	return conn, amqpChannel
 }
 
+// GeneratePayload - function to generate payload to be sent via Rabbit Channel
 func GeneratePayload(data []byte) amqp.Publishing {
 	message := amqp.Publishing{
 		Body: data,

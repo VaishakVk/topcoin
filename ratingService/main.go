@@ -15,17 +15,20 @@ import (
 )
 
 func main() {
+	// Load env variables
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal(err)
 	}
 	var priceList map[string]model.Price
 
+	// HTTP setup
 	router := mux.NewRouter()
 	routes.RegisterRoutes(router)
 	errorsHandledRouter := middlewares.Recovery(router)
 	headersAddedRouter := middlewares.SetHeaders(errorsHandledRouter)
 
+	// Message queue setup
 	conn, chann := messagequeue.ConnectAndCreateChannel()
 	defer conn.Close()
 	defer chann.Close()
@@ -33,6 +36,7 @@ func main() {
 	queue := messagequeue.CreateQueue(chann, "stockPrice")
 	messageChannel := messagequeue.Consume(chann, queue)
 
+	// Trigger a go routine to listen to price data
 	go func() {
 		for response := range messageChannel {
 			parseErr := json.Unmarshal(response.Body, &priceList)
@@ -50,5 +54,6 @@ func main() {
 		}
 	}()
 
+	// Listen to HTTP requests
 	http.ListenAndServe(":8000", headersAddedRouter)
 }

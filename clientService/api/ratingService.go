@@ -11,6 +11,7 @@ import (
 	"topcoin/clientservice/model"
 )
 
+// Get Rating Data from RatingService
 func GetFromRatingService(limit int64) ([]model.PriceRanking, error) {
 	var stockRanking model.APIResponse
 	url := os.Getenv("RATING_SERVICE_URL") + "?limit=" + strconv.Itoa(int(limit))
@@ -28,7 +29,7 @@ func GetFromRatingService(limit int64) ([]model.PriceRanking, error) {
 	if parseErr != nil {
 		return nil, errors.New(parseErr.Error())
 	}
-	fmt.Println(stockRanking)
+
 	if !stockRanking.Status {
 		return nil, errors.New(stockRanking.Error)
 	}

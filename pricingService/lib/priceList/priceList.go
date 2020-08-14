@@ -3,17 +3,18 @@ package pricelist
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
-	"net/http"
 	"os"
 	"strings"
 
+	"topcoin/pricingservice/api"
 	"topcoin/pricingservice/model"
 )
 
+// This is to handle the stocks that are not available in CoinMarket API
 var invalidSymbols map[string]struct{} = make(map[string]struct{})
 
+// Get Price List of all stocks
 func GetPriceList(stocks map[string]struct{}) model.PriceList {
 	var priceList model.PriceList
 	var stockString string
@@ -26,24 +27,13 @@ func GetPriceList(stocks map[string]struct{}) model.PriceList {
 	}
 	stockString = strings.TrimRight(stockString, ",")
 
-	fmt.Println("Stock String", stockString)
-	request, err := http.NewRequest("GET", "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol="+stockString, nil)
+	url := "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=" + stockString
+	headers := map[string]string{"X-CMC_PRO_API_KEY": os.Getenv("API_KEY_PRICE")}
+	body, err := api.GetData(url, headers)
 	if err != nil {
-		panic(err)
+		fmt.Println(err.Error())
 	}
-	request.Header.Set("X-CMC_PRO_API_KEY", os.Getenv("API_KEY_PRICE"))
 
-	var client = http.Client{}
-	response, err := client.Do(request)
-	if err != nil {
-		panic(err)
-	}
-	defer response.Body.Close()
-
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		panic(err)
-	}
 	parseErr := json.Unmarshal(body, &priceList)
 	if parseErr != nil {
 		log.Fatal(parseErr.Error())
@@ -51,6 +41,9 @@ func GetPriceList(stocks map[string]struct{}) model.PriceList {
 
 	errorString := priceList.Status.ErrorMessage
 	if len(errorString) > 0 {
+
+		// If error starts with "Index values for" it indicates that those stocks are not available.
+		// All invalid symbols are removed from stock string and then again the API is called.
 		if strings.Index(errorString, "Invalid values for") != -1 {
 			errorString = strings.ReplaceAll(errorString, `"`, ``)
 			errorString = strings.ReplaceAll(errorString, `:`, `,`)

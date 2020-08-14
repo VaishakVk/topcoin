@@ -13,10 +13,13 @@ import (
 )
 
 func main() {
+	// Load Env variables
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// Http server setup
 	router := mux.NewRouter()
 
 	routes.RegisterUserRoutes(router)
