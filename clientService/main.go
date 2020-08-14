@@ -26,5 +26,5 @@ func main() {
 	errorsHandled := middlewares.Recovery(router)
 	urlUpdated := middlewares.RemoveTrailingSlashes(errorsHandled)
 	headersAdded := middlewares.SetHeaders(urlUpdated)
-	http.ListenAndServe(":6667", headersAdded)
+	log.Fatal(http.ListenAndServe(":6667", headersAdded))
 }

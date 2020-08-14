@@ -9,5 +9,5 @@ import (
 
 // RegisterUserRoutes API
 func RegisterUserRoutes(router *mux.Router) {
-	router.HandleFunc("/rank", controller.GetTopCoins).Methods(http.MethodGet)
+	router.HandleFunc("/topcoin", controller.GetTopCoins).Methods(http.MethodGet)
 }
