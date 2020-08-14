@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"time"
 	"topcoin/pricingservice/lib/pricelist"
@@ -26,6 +27,7 @@ func main() {
 		priceList := pricelist.GetPriceList(stockListMap.Data)
 		bytesResult, _ := json.Marshal(priceList.Data)
 		payload := messagequeue.GeneratePayload(bytesResult)
+		fmt.Println("Publishing", string(payload.Body))
 		messagequeue.PublishToQueue(chann, queue, payload)
 		time.Sleep(time.Second * 5)
 	}

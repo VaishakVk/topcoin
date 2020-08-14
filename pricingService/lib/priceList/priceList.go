@@ -51,14 +51,14 @@ func GetPriceList(stocks map[string]struct{}) model.PriceList {
 
 	errorString := priceList.Status.ErrorMessage
 	if len(errorString) > 0 {
-		if strings.Index(errorString, "Invalid values for") > 0 {
+		if strings.Index(errorString, "Invalid values for") != -1 {
 			errorString = strings.ReplaceAll(errorString, `"`, ``)
 			errorString = strings.ReplaceAll(errorString, `:`, `,`)
 			invalidSymbolsArr := strings.Split(errorString, ",")
 			for _, coin := range invalidSymbolsArr {
 				invalidSymbols[strings.TrimSpace(coin)] = struct{}{}
 			}
-			GetPriceList(stocks)
+			priceList = GetPriceList(stocks)
 		} else {
 			fmt.Println(errorString)
 		}
